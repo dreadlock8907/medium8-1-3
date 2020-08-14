@@ -1,25 +1,54 @@
-class Bag
-{
-    public List<Item> Items;
-    public int MaxWeidth; 
+  class Bag
+  {
+    public readonly int MaxWeight;
+    private readonly List<BagItem> _items;
+
+    public Bag(int maxWeight)
+    {
+      MaxWeight = maxWeight;
+      _items = new List<BagItem>();
+    }
 
     public void AddItem(string name, int count)
     {
-        int currentWeidth = Items.Sum(item => item.Count);
-        Item targetItem = Items.FirstOrDefault(item => item.Name == name);
+      int currentWeight = _items.Sum(item => item.Count);
+      BagItem targetItem = _items.FirstOrDefault(item => item.Name == name);
 
-        if (targetItem == null)
-            throw new InvalidOperationException();
+      if (targetItem == null)
+        throw new InvalidOperationException();
 
-        if (currentWeidth + count > MaxWeidth)
-            throw new InvalidOperationException();
+      if (currentWeight + count > MaxWeight)
+        throw new InvalidOperationException();
 
-        targetItem.Count += count;
+      targetItem.IncreaseCount(count);
     }
-}
 
-class Item
-{
-    public int Count;
-    public string Name;
-}
+    public IEnumerable<Item> GetAllItems()
+    {
+      return _items;
+    }
+  }
+
+  class Item
+  {
+    public readonly string Name;
+    public int Count { get; protected set; }
+
+    public Item(string name, int count)
+    {
+      Name = name;
+      Count = count;
+    }
+  }
+
+  class BagItem : Item
+  {
+    public BagItem(string name, int count) : base(name, count)
+    {
+    }
+
+    public void IncreaseCount(int count)
+    {
+      Count += count;
+    }
+  }
