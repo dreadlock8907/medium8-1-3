@@ -20,7 +20,7 @@
       if (currentWeight + count > MaxWeight)
         throw new InvalidOperationException();
 
-      targetItem.IncCount(count);
+      targetItem.IncreaseCount(count);
     }
 
     public IEnumerable<Item> GetAllItems()
@@ -47,7 +47,7 @@
     {
     }
 
-    public void IncCount(int count)
+    public void IncreaseCount(int count)
     {
       Count += count;
     }
